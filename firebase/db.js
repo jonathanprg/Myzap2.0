@@ -18,7 +18,7 @@ import { deleteDoc,
     doc, 
     getDoc, 
     addDoc 
-} from 'firebase/firestore/lite';
+} from 'firebase/firestore';
 
 const app = initializeApp(config.firebaseConfig);
 const db = getFirestore(app);

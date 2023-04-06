@@ -7,8 +7,7 @@
 import Sessions from '../../controllers/sessions.js';
 import config from '../../config.js';
 import engine from'../../engines/WppConnect.js';
-import { db} from '../../firebase/db.js';
-import { collection, doc, addDoc, setDoc} from "firebase/firestore";
+import { setDoc, db, doc } from '../../firebase/db.js';
 
 export default class Auth {
 
@@ -62,20 +61,18 @@ export default class Auth {
                                 'session': session,
                                 'apitoken': req.headers['apitoken'],
                                 'sessionkey': req.headers['sessionkey'],
-                                'wh_status': req.body.wh_status,
-                                'wh_message': req.body.wh_message,
-                                'wh_qrcode': req.body.wh_qrcode,
-                                'wh_connect': req.body.wh_connect,
+                                'wh_status': req?.body?.wh_status || 'Conecting',
+                                'wh_message': req.body.wh_message || '',
+                                'wh_qrcode': req.body.wh_qrcode || '',
+                                'wh_connect': req.body.wh_connect || '',
                                 'WABrowserId': response.WABrowserId,
                                 'WASecretBundle': response.WASecretBundle,
                                 'WAToken1': response.WAToken1,
                                 'WAToken2': response.WAToken2,
                                 'Engine': process.env.ENGINE
                             }
-                            console.log('Atualizando a sessão no Firebase: '+session)
-                            console.log('Atualizando a sessão no Firebase 1: '+data)
-                            console.log('Atualizando a sessão no Firebase 2: '+Object.keys(data))
-                            await addDoc(collection(db, "Sessions", session), data);
+               
+                            await setDoc(doc(db, "Sessions", session), data);
     
                             res.status(200).json({
                                 "result": 200,
